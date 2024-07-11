@@ -2,11 +2,21 @@ Custom License for NexScan
 
 Copyright (c) 2024 Nexeo Security.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction for personal and non-commercial use, including without limitation the rights to use, copy, modify, merge, publish, and distribute copies of the Software, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+documentation files (the "Software"), to deal in the Software without restriction for personal and 
+non-commercial use, including without limitation the rights to use, copy, modify, merge, publish, and 
+distribute copies of the Software, subject to the following conditions:
 
-1. The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-2. The Software or substantial portions of it shall not be used for commercial purposes without explicit permission from Nexeo Security. For the purposes of this license, "commercial purposes" means any use that generates revenue, is part of a commercial offering, or is used in a business environment.
+1. The above copyright notice and this permission notice shall be included in all copies or substantial 
+portions of the Software.
+2. The Software or substantial portions of it shall not be used for commercial purposes without explicit 
+permission from Nexeo Security. For the purposes of this license, "commercial purposes" means any use that 
+generates revenue, is part of a commercial offering, or is used in a business environment.
 3. Contributions to the Software are welcome and must be licensed under the same terms as this license.
 4. Any use of the Software must include clear attribution to Nexeo Security and the original author(s).
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
