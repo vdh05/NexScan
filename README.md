@@ -1,4 +1,4 @@
-# Your Project Name
+# NexScan
 
 [![License](https://img.shields.io/badge/license-Custom%20License-blue.svg)](./LICENSE)
 
