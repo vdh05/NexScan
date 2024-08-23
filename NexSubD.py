@@ -1,13 +1,3 @@
-"""
-This file is part of NexScan.
-
-NexScan is free software: you can use it for personal and non-commercial purposes under the terms of the Custom License.
-
-For commercial use, please contact Nexeo Security at business@nexeosecurity.tech.
-
-NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Custom License for more details, located in the LICENSE file.
-"""
-
 import argparse
 import socket
 import re
@@ -31,7 +21,7 @@ def filter_url(url):
 
 def fuzz(target, file='./subdomains.txt'):
     """
-    Performs directory fuzzing on a target domain using a wordlist.
+    Performs subdomain fuzzing on a target domain using a wordlist.
 
     Args:
         target (str): The target domain name (with protocol removed).
@@ -49,20 +39,18 @@ def fuzz(target, file='./subdomains.txt'):
                 try:
                     # Resolve the domain name to an IP address
                     ip_address = socket.gethostbyname(domain)
-                    if ip_address != None:
-                        print(f"[\033[92m +\033[0m ] {domain}")  # Set flag to true if domain is found
-
+                    if ip_address:
+                        print(f"[\033[92m +\033[0m ] {domain} - {ip_address}")
                     else:
                         print(f"[\033[91m -\033[0m ] {domain}")
-                except socket.gaierror:
-                    print("Socket error")  # Ignore socket errors and continue with next word
+                except socket.gaierror as e:
+                    print(f"[\033[91m -\033[0m ] {domain} - Socket error: {e}")
 
-                # Print the domain along with whether it's found or not
-                
-                
+                except Exception as e:
+                    print(f"[\033[91m !\033[0m ] {domain} - Unexpected error: {e}")
+
     except KeyboardInterrupt:
         print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)
     except FileNotFoundError:
         print(f"Error: Wordlist file '{filename}' not found.")
-
