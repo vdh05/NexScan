@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This file is part of NexScan.
 
@@ -13,7 +14,7 @@ import argparse
 import paramiko
 
 def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None):
-    print(userfile, passfile, user, password)
+    print(user, password, userfile='./unix_users.txt', passfile='./unix_passwords.txt')
     try:
         if passfile and user:
             with open(passfile, 'r') as f:
