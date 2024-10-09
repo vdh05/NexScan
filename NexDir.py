@@ -26,7 +26,8 @@ def fuzz(target, file='small.txt'):
                     if response.status_code == 200:
                         print(f'\033[92m [+]\033[0m Found: {target}/{word}')
                     else:
-                        print(f'\033[91m [-]\033[0m Not Found: {target}/{word} (Status code: {response.status_code})')
+                        print(f'\033[91m [-]\033[0m Not Found: {target}/{word}')
+                        # print(f'\033[91m [-]\033[0m Not Found: {target}/{word} (Status code: {response.status_code})') # For Debugging
                 except requests.exceptions.Timeout:
                     print(f'\033[91m [-]\033[0m Timeout for: {target}/{word}')
                 except requests.exceptions.RequestException as e:

@@ -52,11 +52,11 @@ def main():
     ssh_parser = subparsers.add_parser('ssh', help='Specify service as SSH')
     ssh_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     ssh_parser.add_argument('-u', '--user', type=str, required=False, help='Username')
-    ssh_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User file')
-    ssh_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
-    ssh_parser.add_argument('-p', '--password', type=argparse.FileType('r'), help='Password')
+    ssh_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), default='./unix_users.txt', help='User file (default: ./unix_users.txt)')
+    ssh_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
+    ssh_parser.add_argument('-p', '--password', type=str, required=False, help='Password')
     ssh_parser.add_argument('-port', default=22, type=int, help='Port')
-
+    
     # SMB subparser
     smb_parser = subparsers.add_parser('smb', help='Specify service as SMB')
     smb_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
