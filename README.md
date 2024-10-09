@@ -10,8 +10,16 @@ NexScan is a penetration testing tool designed to automate various tasks and pro
 ## Usage
 
 ### Installation
+```
+https://github.com/nexeosecurity/NexScan.git
+```
 
 ### Setup
+```
+cd NexScan/
+pip install -r requirements.txt
+```
+
 
 ### Functionality
 
