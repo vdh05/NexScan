@@ -5,7 +5,7 @@
 ## Description
 
 NexScan: Penetration Testing Swiss Knife.
-NexScan is a penetration testing tool designed to automate various tasks and provide a comprehensive set of features, which include Sub Domain Fuzzing, Directory Fuzzing, HTTP Enumeration, SSH Bruteforce, FTP Bruteforce, MySQL Bruteforce and SMB Bruteforce. The current version of the project i.e., NexScan v1.0.0 is a command line based tool.
+NexScan is a penetration testing tool designed to automate various tasks and provide a comprehensive set of features, which include Sub Domain Fuzzing, Directory Fuzzing, SSH Bruteforce, FTP Bruteforce, MySQL Bruteforce and SMB Bruteforce. The current version of the project i.e., NexScan v1.0.0 is a command line based tool.
 
 ## Usage
 
