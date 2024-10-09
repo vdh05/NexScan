@@ -16,7 +16,7 @@ NexScan is a penetration testing tool designed to automate various tasks and pro
 ### Functionality
 
 #### Directory Fuzzing
-'''./NexScan.py directory -T https://nexeosecurity.tech'''
+```./NexScan.py directory -T https://nexeosecurity.tech```
 
 #### Sub-domain Fuzzing
 ```./NexScan.py subdomain -T https://nexeosecurity.tech```
