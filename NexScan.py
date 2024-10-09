@@ -70,6 +70,8 @@ def main():
     mysql_parser.add_argument('-p', '--password', type=str, help='Password')
     mysql_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User File')
     mysql_parser.add_argument('-P', '--passfile', type=argparse.FileType('r'), help='Password File')
+    mysql_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
+    mysql_parser.add_argument('-s', '--stop-on-success', action='store_true', help='Stop on first successful login')
 
     # Directory subparser
     directory_parser = subparsers.add_parser('directory', help='Perform Directory Fuzzing')
@@ -104,7 +106,7 @@ def main():
     elif args.method == 'mysql':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passfile else args.passfile.name
-        NexMySql.connectMySQL(args.target, args.user, args.password, userfile, passwordfile)
+        NexMySql.connectMySQL(args.target, args.user, args.password, userfile, passwordfile, args.verbose, args.stop_on_success)
 
     elif args.method == 'directory':
         NexDir.fuzz(args.target, args.file.name, args.verbose) if args.file else NexDir.fuzz(args.target, verbose=args.verbose)
