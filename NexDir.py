@@ -11,7 +11,7 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 import requests
 import argparse
 
-def fuzz(target, file='/usr/share/wordlists/dirb/small.txt'):
+def fuzz(target, file='small.txt'):
     try:
         # Ensure the target has a scheme (http:// or https://)
         if not target.startswith(('http://', 'https://')):

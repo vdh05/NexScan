@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This file is part of NexScan.
 
@@ -7,7 +8,6 @@ For commercial use, please contact Nexeo Security at business@nexeosecurity.tech
 
 NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Custom License for more details, located in the LICENSE file.
 """
-
 import argparse
 import socket
 import re

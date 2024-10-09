@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 This file is part of NexScan.
 
@@ -8,10 +9,9 @@ For commercial use, please contact Nexeo Security at business@nexeosecurity.tech
 NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Custom License for more details, located in the LICENSE file.
 """
 
-#!/usr/bin python3
 import os
 import argparse
-# import NexSMB # error in NexSMB
+import NexSMB
 import NexHTTP
 import NexFTP
 import NexSSH
@@ -56,7 +56,7 @@ def main():
     ssh_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
     ssh_parser.add_argument('-p', '--password', type=argparse.FileType('r'), help='Password')
     ssh_parser.add_argument('-port', default=22, type=int, help='Port')
-'''
+
     # SMB subparser
     smb_parser = subparsers.add_parser('smb', help='Specify service as SMB')
     smb_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
@@ -70,7 +70,7 @@ def main():
     group_smb_user = smb_parser.add_mutually_exclusive_group(required=True)
     group_smb_user.add_argument('-u', '--user', type=str, help='Username')
     group_smb_user.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User file')
-'''
+
     # MySQL subparser
     mysql_parser = subparsers.add_parser('mysql', help='Specify service as MySQL')
     mysql_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
@@ -106,12 +106,12 @@ def main():
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name
         NexSSH.ssh_bruteforce(args.target, args.port, userfile, passwordfile, args.user, args.password)
-'''
+
     elif args.method == 'smb':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name
         NexSMB.fuzz_smb(args.user, args.password, args.target, args.share, args.port, userfile, passwordfile)
-'''
+
     elif args.method == 'mysql':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passfile else args.passfile.name
