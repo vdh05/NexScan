@@ -105,7 +105,7 @@ def main():
 
     elif args.method == 'mysql':
         userfile = None if not args.userfile else args.userfile.name
-        passwordfile = None if not args.passfile else args.passfile.name
+        passwordfile = None if not args.passwordfile else args.passwordfile.name
         NexMySql.connectMySQL(args.target, args.user, args.password, userfile, passwordfile, args.verbose, args.stop_on_success)
 
     elif args.method == 'directory':
