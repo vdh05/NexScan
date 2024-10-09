@@ -9,13 +9,14 @@ For commercial use, please contact Nexeo Security at business@nexeosecurity.tech
 NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Custom License for more details, located in the LICENSE file.
 """
 
-import argparse
 import mysql.connector
 
-def connectMySQL(host, user, password=None, userfile=None, passfile=None, verbose=False, stop_on_success=False):
+def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, verbose=False, stop_on_success=False):
     try:
-        # Case 1: Username and password provided directly
+        # Case 1: Direct username and password provided
         if user and password:
+            if verbose:
+                print(f"[*] Trying {user}:{password} on {host}")
             try:
                 mydb = mysql.connector.connect(
                     host=host,
@@ -25,17 +26,20 @@ def connectMySQL(host, user, password=None, userfile=None, passfile=None, verbos
                 mydb.close()
                 print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
                 if stop_on_success:
-                    return True  # Stop after success
-            except mysql.connector.Error:
+                    return True  # Stop on first success
+            except mysql.connector.Error as err:
                 if verbose:
                     print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-        
+                    print(f"Error: {err}")
+
         # Case 2: Username from file, Password provided directly
         elif userfile and password:
             with open(userfile, 'r') as uf:
                 users = [line.strip() for line in uf]
                 
             for user in users:
+                if verbose:
+                    print(f"[*] Trying {user}:{password} on {host}")
                 try:
                     mydb = mysql.connector.connect(
                         host=host,
@@ -45,31 +49,38 @@ def connectMySQL(host, user, password=None, userfile=None, passfile=None, verbos
                     mydb.close()
                     print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
                     if stop_on_success:
-                        return True  # Stop after success
-                except mysql.connector.Error:
+                        return True  # Stop on first success
+                except mysql.connector.Error as err:
                     if verbose:
                         print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-        
-        # Case 3: Both username and password files provided
-        elif user and passfile:
+                        print(f"Error: {err}")
+
+        # Case 3: Username and password files provided
+        elif userfile and passfile:
+            with open(userfile, 'r') as uf:
+                users = [line.strip() for line in uf]
             with open(passfile, 'r') as pf:
                 passwords = [line.strip() for line in pf]
 
-            for password in passwords:
-                try:
-                    mydb = mysql.connector.connect(
-                        host=host,
-                        user=user,
-                        password=password
-                    )
-                    mydb.close()
-                    print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
-                    if stop_on_success:
-                        return True  # Stop after success
-                except mysql.connector.Error:
+            for user in users:
+                for password in passwords:
                     if verbose:
-                        print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-        
+                        print(f"[*] Trying {user}:{password} on {host}")
+                    try:
+                        mydb = mysql.connector.connect(
+                            host=host,
+                            user=user,
+                            password=password
+                        )
+                        mydb.close()
+                        print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
+                        if stop_on_success:
+                            return True  # Stop on first success
+                    except mysql.connector.Error as err:
+                        if verbose:
+                            print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
+                            print(f"Error: {err}")
+
         return False  # No successful login
 
     except KeyboardInterrupt:
