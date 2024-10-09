@@ -44,6 +44,8 @@ def main():
     ssh_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
     ssh_parser.add_argument('-p', '--password', type=str, required=False, help='Password')
     ssh_parser.add_argument('-port', default=22, type=int, help='Port')
+    ssh_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
+    ssh_parser.add_argument('-s','--stop-on-success', action='store_true', help='Stop on first successful login')
 
     # SMB subparser
     smb_parser = subparsers.add_parser('smb', help='Specify service as SMB')
@@ -71,11 +73,13 @@ def main():
     directory_parser = subparsers.add_parser('directory', help='Perform Directory Fuzzing')
     directory_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     directory_parser.add_argument('-f', '--file', type=argparse.FileType('r'), help='Fuzzing File', required=False)
+    directory_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
 
     # Subdomain subparser
     subdomain_parser = subparsers.add_parser('subdomain', help='Perform Subdomain Fuzzing')
     subdomain_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     subdomain_parser.add_argument('-F', '--file', type=argparse.FileType('r'), help='Subdomain file')
+    subdomain_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
 
     args = parser.parse_args()
 
@@ -88,7 +92,7 @@ def main():
     elif args.method == 'ssh':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name
-        NexSSH.ssh_bruteforce(args.target, args.port, userfile, passwordfile, args.user, args.password)
+        NexSSH.ssh_bruteforce(args.target, args.port, userfile, passwordfile, args.user, args.password, args.verbose, args.stop_on_success)
 
     elif args.method == 'smb':
         userfile = None if not args.userfile else args.userfile.name
@@ -101,11 +105,11 @@ def main():
         NexMySql.connectMySQL(args.target, args.user, args.password, userfile, passwordfile)
 
     elif args.method == 'directory':
-        NexDir.fuzz(args.target, args.file.name) if args.file else NexDir.fuzz(args.target)
+        NexDir.fuzz(args.target, args.file.name, args.verbose) if args.file else NexDir.fuzz(args.target, verbose=args.verbose)
 
     elif args.method == 'subdomain':
         filtered_target = NexSubD.filter_url(args.target)
-        NexSubD.fuzz(filtered_target, args.file.name) if args.file else NexSubD.fuzz(filtered_target)
+        NexSubD.fuzz(filtered_target, args.file.name, args.verbose) if args.file else NexSubD.fuzz(filtered_target, verbose=args.verbose)
 
 if __name__ == '__main__':
     main()

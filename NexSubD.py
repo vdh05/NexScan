@@ -12,34 +12,9 @@ import argparse
 import socket
 import re
 
-def filter_url(url):
-    """
-    Removes http://www., https://www., or www. from the beginning of a URL.
-
-    Args:
-        url (str): The URL string.
-
-    Returns:
-        str: The modified URL with protocol and www removed (if present).
-    """
-    pattern = r"(?:https?://)?(?:www\.)?(.*)"
-    match = re.match(pattern, url)
-    if match:
-        return match.group(1)  # Return the captured group (remaining part of URL)
-    else:
-        return url  # Return the original URL if no match
-
-def fuzz(target, file='./subdomains.txt'):
-    """
-    Performs subdomain fuzzing on a target domain using a wordlist.
-
-    Args:
-        target (str): The target domain name (with protocol removed).
-        file (str, optional): The path to the wordlist file. Defaults to './subdomains.txt'.
-    """
+def fuzz(target, file='./subdomains.txt', verbose=False):
     try:
-        # Use the provided filename or default if not specified
-        filename = file if file else './subdomains.txt'  
+        filename = file if file else './subdomains.txt'
 
         with open(filename, 'r') as f:
             for word in f.readlines():
@@ -47,17 +22,17 @@ def fuzz(target, file='./subdomains.txt'):
                 domain = f"{word}.{target}"
 
                 try:
-                    # Resolve the domain name to an IP address
                     ip_address = socket.gethostbyname(domain)
                     if ip_address:
                         print(f"[\033[92m +\033[0m ] {domain} - {ip_address}")
-                    else:
+                    elif verbose:
                         print(f"[\033[91m -\033[0m ] {domain}")
                 except socket.gaierror as e:
-                    print(f"[\033[91m -\033[0m ] {domain} - Socket error: {e}")
-
+                    if verbose:
+                        print(f"[\033[91m -\033[0m ] {domain} - Socket error: {e}")
                 except Exception as e:
-                    print(f"[\033[91m !\033[0m ] {domain} - Unexpected error: {e}")
+                    if verbose:
+                        print(f"[\033[91m !\033[0m ] {domain} - Unexpected error: {e}")
 
     except KeyboardInterrupt:
         print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')

