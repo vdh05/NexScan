@@ -53,7 +53,7 @@ def main():
     smb_parser = subparsers.add_parser('smb', help='Specify service as SMB')
     smb_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     smb_parser.add_argument('-port', default=445, type=int, help='Port')
-    smb_parser.add_argument('-s', '--share', type=str, help='Name of SMB Share')
+    smb_parser.add_argument('-s', '--share', type=str, help='Name of SMB Share (optional, will enumerate if not provided)')
 
     group_smb_pass = smb_parser.add_mutually_exclusive_group(required=True)
     group_smb_pass.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
