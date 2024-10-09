@@ -19,19 +19,19 @@ NexScan is a penetration testing tool designed to automate various tasks and pro
 '''./NexScan.py directory -T https://nexeosecurity.tech'''
 
 #### Sub-domain Fuzzing
-'''./NexScan.py subdomain -T https://nexeosecurity.tech'''
+```./NexScan.py subdomain -T https://nexeosecurity.tech```
 
 #### SMB Enumeration
-'''./NexScan.py smb -T 172.16.173.148 -u kali -P unix_passwords.txt'''
+```./NexScan.py smb -T 172.16.173.148 -u kali -P unix_passwords.txt```
 
 #### SSH Bruteforce
-'''./NexScan.py ssh -T 172.16.173.148'''
+```./NexScan.py ssh -T 172.16.173.148```
 
 #### FTP Bruteforce
-'''./NexScan.py ftp -T 172.16.173.148'''
+```./NexScan.py ftp -T 172.16.173.148```
 
 #### MySQL Bruteforce
-'''./NexScan.py mysql -T 172.16.173.148 -U unix_users.txt -p admin -v'''
+```./NexScan.py mysql -T 172.16.173.148 -U unix_users.txt -p admin -v```
 
 ## License
 
