@@ -27,6 +27,9 @@ NexScan is a penetration testing tool designed to automate various tasks and pro
 #### FTP Bruteforce
 '''./NexScan.py ftp -T 172.16.173.148'''
 
+#### MySQL Bruteforce
+
+
 ## License
 
 This project is licensed under the terms of the [Custom License](./LICENSE).

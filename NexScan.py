@@ -56,20 +56,20 @@ def main():
     smb_parser.add_argument('-s', '--share', type=str, help='Name of SMB Share (optional, will enumerate if not provided)')
 
     group_smb_pass = smb_parser.add_mutually_exclusive_group(required=True)
-    group_smb_pass.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
+    group_smb_pass.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
     group_smb_pass.add_argument('-p', '--password', type=str, help='Password')
 
     group_smb_user = smb_parser.add_mutually_exclusive_group(required=True)
     group_smb_user.add_argument('-u', '--user', type=str, help='Username')
-    group_smb_user.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User file')
+    group_smb_user.add_argument('-U', '--userfile', type=argparse.FileType('r'), default='./unix_users.txt', help='User file (default: ./unix_users.txt)')
 
     # MySQL subparser
     mysql_parser = subparsers.add_parser('mysql', help='Specify service as MySQL')
     mysql_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     mysql_parser.add_argument('-u', '--user', type=str, help='Username')
     mysql_parser.add_argument('-p', '--password', type=str, help='Password')
-    mysql_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User File')
-    mysql_parser.add_argument('-P', '--passfile', type=argparse.FileType('r'), help='Password File')
+    mysql_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), default='./unix_users.txt', help='User file (default: ./unix_users.txt)')
+    mysql_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
     mysql_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')
     mysql_parser.add_argument('-s', '--stop-on-success', action='store_true', help='Stop on first successful login')
 
