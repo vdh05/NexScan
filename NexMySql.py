@@ -15,8 +15,6 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
     try:
         # Case 1: Direct username and password provided
         if user and password:
-            if verbose:
-                print(f"[*] Trying {user}:{password} on {host}")
             try:
                 mydb = mysql.connector.connect(
                     host=host,
@@ -27,19 +25,15 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                 print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
                 if stop_on_success:
                     return True  # Stop on first success
-            except mysql.connector.Error as err:
-                if verbose:
-                    print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-                    print(f"Error: {err}")
+            except mysql.connector.Error:
+                print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
 
-        # Case 2: Username from file, Password provided directly
-        elif userfile and password:
-            with open(userfile, 'r') as uf:
-                users = [line.strip() for line in uf]
-                
-            for user in users:
-                if verbose:
-                    print(f"[*] Trying {user}:{password} on {host}")
+        # Case 2: Username provided, password file given
+        elif user and passfile:
+            with open(passfile, 'r') as pf:
+                passwords = [line.strip() for line in pf]
+
+            for password in passwords:
                 try:
                     mydb = mysql.connector.connect(
                         host=host,
@@ -50,10 +44,8 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                     print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
                     if stop_on_success:
                         return True  # Stop on first success
-                except mysql.connector.Error as err:
-                    if verbose:
-                        print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-                        print(f"Error: {err}")
+                except mysql.connector.Error:
+                    print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
 
         # Case 3: Username and password files provided
         elif userfile and passfile:
@@ -64,8 +56,6 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
 
             for user in users:
                 for password in passwords:
-                    if verbose:
-                        print(f"[*] Trying {user}:{password} on {host}")
                     try:
                         mydb = mysql.connector.connect(
                             host=host,
@@ -76,10 +66,8 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                         print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
                         if stop_on_success:
                             return True  # Stop on first success
-                    except mysql.connector.Error as err:
-                        if verbose:
-                            print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
-                            print(f"Error: {err}")
+                    except mysql.connector.Error:
+                        print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
 
         return False  # No successful login
 
