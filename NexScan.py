@@ -12,7 +12,6 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 import os
 import argparse
 import NexSMB
-import NexHTTP
 import NexFTP
 import NexSSH
 import NexMySql
@@ -28,17 +27,6 @@ def main():
     # Add subparsers for each method
     subparsers = parser.add_subparsers(dest='method', help='Specify service')
 
-    # HTTP subparser
-    http_parser = subparsers.add_parser('http', help='Specify service as HTTP')
-    http_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
-    http_parser.add_argument('-u', '--user', required=False, type=str, help='Username')
-    http_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User file')
-    http_parser.add_argument('-p', '--password', required=False, type=str, help='Password')
-    http_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
-    http_parser.add_argument('-userlabel', default="username", type=str, help='User label for form')
-    http_parser.add_argument('-passlabel', default="password", type=str, help='Password label for form')
-    http_parser.add_argument('--error', nargs='+', type=str, help='Error message for invalid login attempt')
-    
     # FTP subparser
     ftp_parser = subparsers.add_parser('ftp', help='Specify service as FTP')
     ftp_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
@@ -56,7 +44,7 @@ def main():
     ssh_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
     ssh_parser.add_argument('-p', '--password', type=str, required=False, help='Password')
     ssh_parser.add_argument('-port', default=22, type=int, help='Port')
-    
+
     # SMB subparser
     smb_parser = subparsers.add_parser('smb', help='Specify service as SMB')
     smb_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
@@ -92,12 +80,7 @@ def main():
     args = parser.parse_args()
 
     # Handle each method
-    if args.method == 'http':
-        userfile = None if not args.userfile else args.userfile.name
-        passwordfile = None if not args.passwordfile else args.passwordfile.name
-        NexHTTP.http_bruteforce(args.target, args.userlabel, args.passlabel, userfile, passwordfile, args.error, args.user, args.password)
-
-    elif args.method == 'ftp':
+    if args.method == 'ftp':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name
         NexFTP.bruteFTP(args.target, userfile, passwordfile, args.user, args.password)
