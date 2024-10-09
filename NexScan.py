@@ -31,10 +31,12 @@ def main():
     ftp_parser = subparsers.add_parser('ftp', help='Specify service as FTP')
     ftp_parser.add_argument('-T', '--target', type=str, help='Specify Target', required=True)
     ftp_parser.add_argument('-u', '--user', required=False, type=str, help='Username')
-    ftp_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), help='User file')
-    ftp_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), help='Password file')
+    ftp_parser.add_argument('-U', '--userfile', type=argparse.FileType('r'), default='./unix_users.txt', help='User file (default: ./unix_users.txt)')
+    ftp_parser.add_argument('-P', '--passwordfile', type=argparse.FileType('r'), default='./unix_passwords.txt', help='Password file (default: ./unix_passwords.txt)')
     ftp_parser.add_argument('-p', '--password', type=str, help='Password')
     ftp_parser.add_argument('-port', default=21, type=int, help='Port')
+    ftp_parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose output')  # Verbose flag
+    ftp_parser.add_argument('-s', '--stop-on-success', action='store_true', help='Stop on first successful login')  # Stop on success flag
 
     # SSH subparser
     ssh_parser = subparsers.add_parser('ssh', help='Specify service as SSH')
@@ -87,8 +89,8 @@ def main():
     if args.method == 'ftp':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name
-        NexFTP.bruteFTP(args.target, userfile, passwordfile, args.user, args.password)
-
+        NexFTP.bruteFTP(args.target, userfile, passwordfile, args.user, args.password, args.verbose, args.stop_on_success)
+    
     elif args.method == 'ssh':
         userfile = None if not args.userfile else args.userfile.name
         passwordfile = None if not args.passwordfile else args.passwordfile.name

