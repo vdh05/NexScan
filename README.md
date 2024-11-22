@@ -40,7 +40,7 @@ Default Fuzzing
 ```
 Verbose Option
 ```
-./NexScan.py subdomain -T https://nexeosecurity.tech
+./NexScan.py subdomain -T https://nexeosecurity.tech -v
 ```
 
 #### SMB Enumeration
