@@ -63,8 +63,21 @@ Userfile and Password File
 ```
 
 #### FTP Bruteforce
+Default
 ```
 ./NexScan.py ftp -T 172.16.173.129
+```
+Verbose
+```
+./NexScan.py ftp -T 172.16.173.129 -v
+```
+Stop on Success
+```
+./NexScan.py ftp -T 172.16.173.129 -s
+```
+Both
+```
+./NexScan.py ftp -T 172.16.173.129 -s -v
 ```
 
 #### MySQL Bruteforce
