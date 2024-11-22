@@ -82,7 +82,7 @@ Both
 
 #### MySQL Bruteforce
 ```
-./NexScan.py mysql -T 172.16.173.129 -U unix_users.txt -p admin -v
+./NexScan.py mysql -T 172.16.173.129 -u admin -P unix_passwords.txt -v
 ```
 
 ## License
