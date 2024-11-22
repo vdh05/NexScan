@@ -12,6 +12,23 @@ import argparse
 import socket
 import re
 
+def filter_url(url):
+    """
+    Removes http://www., https://www., or www. from the beginning of a URL.
+
+    Args:
+        url (str): The URL string.
+
+    Returns:
+        str: The modified URL with protocol and www removed (if present).
+    """
+    pattern = r"(?:https?://)?(?:www\.)?(.*)"
+    match = re.match(pattern, url)
+    if match:
+        return match.group(1)  # Return the captured group (remaining part of URL)
+    else:
+        return url  # Return the original URL if no match
+        
 def fuzz(target, file='./subdomains.txt', verbose=False):
     try:
         filename = file if file else './subdomains.txt'
