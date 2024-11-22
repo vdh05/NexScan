@@ -24,33 +24,52 @@ pip install -r requirements.txt
 ### Functionality
 
 #### Directory Fuzzing
+Default Fuzzing
 ```
 ./NexScan.py directory -T https://nexeosecurity.tech
 ```
+Verbose Option
+```
+./NexScan.py directory -T https://nexeosecurity.tech -v
+```
 
 #### Sub-domain Fuzzing
+Default Fuzzing
+```
+./NexScan.py subdomain -T https://nexeosecurity.tech
+```
+Verbose Option
 ```
 ./NexScan.py subdomain -T https://nexeosecurity.tech
 ```
 
 #### SMB Enumeration
+Username and Password File
 ```
-./NexScan.py smb -T 172.16.173.148 -u kali -P unix_passwords.txt
+./NexScan.py smb -T 172.16.173.129 -u kali -P unix_passwords.txt
+```
+Userfile and Password
+```
+./NexScan.py smb -T 172.16.173.129 -U unix_users.txt -p kali
+```
+Userfile and Password File
+```
+./NexScan.py smb -T 172.16.173.129 -U unix_users.txt -P unix_passwords.txt
 ```
 
 #### SSH Bruteforce
 ```
-./NexScan.py ssh -T 172.16.173.148
+./NexScan.py ssh -T 172.16.173.129
 ```
 
 #### FTP Bruteforce
 ```
-./NexScan.py ftp -T 172.16.173.148
+./NexScan.py ftp -T 172.16.173.129
 ```
 
 #### MySQL Bruteforce
 ```
-./NexScan.py mysql -T 172.16.173.148 -U unix_users.txt -p admin -v
+./NexScan.py mysql -T 172.16.173.129 -U unix_users.txt -p admin -v
 ```
 
 ## License
