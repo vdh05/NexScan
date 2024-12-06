@@ -22,12 +22,12 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, ver
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             try:
                 ssh.connect(host, port, user, password)
-                print(f'\033[92m [+]\033[0m {user} : {password}')
+                print(f'[\033[92m +\033[0m ] {user} : {password}')
                 if stop_on_success:
                     return
             except paramiko.AuthenticationException:
                 if verbose:
-                    print(f'\033[91m [-]\033[0m {user} : {password}')
+                    print(f'[\033[91m -\033[0m ] {user} : {password}')
             return  # No need to continue if username and password were provided directly
 
         # Case where password file and a single user is provided
@@ -40,12 +40,12 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, ver
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 try:
                     ssh.connect(host, port, user, password)
-                    print(f'\033[92m [+]\033[0m {user} : {password}')
+                    print(f'[\033[92m +\033[0m ] {user} : {password}')
                     if stop_on_success:
                         return
                 except paramiko.AuthenticationException:
                     if verbose:
-                        print(f'\033[91m [-]\033[0m {user} : {password}')
+                        print(f'[\033[91m -\033[0m ] {user} : {password}')
 
         # Case where user file and single password is provided
         elif userfile and password:
@@ -57,12 +57,12 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, ver
                 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 try:
                     ssh.connect(host, port, user, password)
-                    print(f'\033[92m [+]\033[0m {user} : {password}')
+                    print(f'[\033[92m +\033[0m ] {user} : {password}')
                     if stop_on_success:
                         return
                 except paramiko.AuthenticationException:
                     if verbose:
-                        print(f'\033[91m [-]\033[0m {user} : {password}')
+                        print(f'[\033[91m -\033[0m ] {user} : {password}')
 
         # Case where both user file and password file are provided
         elif userfile and passfile:
@@ -78,15 +78,15 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, ver
                     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                     try:
                         ssh.connect(host, port, user, password)
-                        print(f'\033[92m [+]\033[0m {user} : {password}')
+                        print(f'[\033[92m +\033[0m ] {user} : {password}')
                         if stop_on_success:
                             return
                     except paramiko.AuthenticationException:
                         if verbose:
-                            print(f'\033[91m [-]\033[0m {user} : {password}')
+                            print(f'[\033[91m -\033[0m ] {user} : {password}')
 
         else:
-            print('\033[91m [-]\033[0m Please provide both username and password files')
+            print('[\033[91m -\033[0m ] Please provide both username and password files')
             exit(1)
 
     except KeyboardInterrupt:

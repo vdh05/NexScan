@@ -12,7 +12,7 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 import requests
 import argparse
 
-def fuzz(target, file='./lists/directory_list.txt', verbose=False):
+def fuzz(target, file, verbose=False):
     try:
         if not target.startswith(('http://', 'https://')):
             target = 'http://' + target
@@ -36,3 +36,5 @@ def fuzz(target, file='./lists/directory_list.txt', verbose=False):
     except KeyboardInterrupt:
         print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)
+    except FileNotFoundError:
+        print(f"Error: Wordlist file '{file}' not found.")

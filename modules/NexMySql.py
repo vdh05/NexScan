@@ -11,7 +11,7 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 
 import mysql.connector
 
-def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, verbose=False, stop_on_success=False):
+def connectMySQL(host, user, password, userfile, passfile, verbose=False, stop_on_success=False):
     try:
         # Case 1: Direct username and password provided
         if user and password:
@@ -22,11 +22,11 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                     password=password
                 )
                 mydb.close()
-                print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
+                print(f'[\033[92m + \033[0m ] Successfully connected: {user} : {password}')
                 if stop_on_success:
                     return True  # Stop on first success
             except mysql.connector.Error:
-                print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
+                print(f'[\033[91m -\033[0m ] Failed to connect: {user} : {password}')
 
         # Case 2: Username provided, password file given
         elif user and passfile:
@@ -41,11 +41,11 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                         password=password
                     )
                     mydb.close()
-                    print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
+                    print(f'[\033[92m +\033[0m ] Successfully connected: {user} : {password}')
                     if stop_on_success:
                         return True  # Stop on first success
                 except mysql.connector.Error:
-                    print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
+                    print(f'[\033[91m -\033[0m ] Failed to connect: {user} : {password}')
 
         # Case 3: Username and password files provided
         elif userfile and passfile:
@@ -63,11 +63,11 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
                             password=password
                         )
                         mydb.close()
-                        print(f'\033[92m[+]\033[0m Successfully connected: {user} : {password}')
+                        print(f'[\033[92m +\033[0m ] Successfully connected: {user} : {password}')
                         if stop_on_success:
                             return True  # Stop on first success
                     except mysql.connector.Error:
-                        print(f'\033[91m[-]\033[0m Failed to connect: {user} : {password}')
+                        print(f'[\033[91m -\033[0m ] Failed to connect: {user} : {password}')
 
         return False  # No successful login
 

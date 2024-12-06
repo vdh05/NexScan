@@ -29,11 +29,9 @@ def filter_url(url):
     else:
         return url  # Return the original URL if no match
         
-def fuzz(target, file='./lists/subdomain_list.txt', verbose=False):
+def fuzz(target, file, verbose=False):
     try:
-        filename = file if file else './lists/subdomain_list.txt'
-
-        with open(filename, 'r') as f:
+        with open(file, 'r') as f:
             for word in f.readlines():
                 word = word.strip()
                 domain = f"{word}.{target}"
@@ -55,4 +53,4 @@ def fuzz(target, file='./lists/subdomain_list.txt', verbose=False):
         print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)
     except FileNotFoundError:
-        print(f"Error: Wordlist file '{filename}' not found.")
+        print(f"Error: Wordlist file '{file}' not found.")

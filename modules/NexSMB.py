@@ -12,7 +12,7 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 from smb.SMBConnection import SMBConnection
 
 # Function to list available shares (for public and authenticated sessions)
-def list_smb_shares(target, user=None, password=None, port=445):
+def list_smb_shares(target, port, user=None, password=None):
     my_name = "NexScan"
     remote_name = "Target"
 
@@ -33,12 +33,12 @@ def list_smb_shares(target, user=None, password=None, port=445):
         return []
 
 # Function to enumerate public SMB shares (guest access)
-def enum_public_shares(target, port=445):
+def enum_public_shares(target, port):
     print(f"\n\033[94m[*]\033[0m Enumerating public SMB shares on {target}...\n")
     return list_smb_shares(target, port=port)
 
 # Function to brute-force SMB credentials and list shares after authentication
-def fuzz_smb(user, password, target, share=None, port=445, userfile=None, passfile=None):
+def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=None):
     try: 
         my_name = "NexScan"
         remote_name = "Target"
