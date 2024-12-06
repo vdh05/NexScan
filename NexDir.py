@@ -23,15 +23,15 @@ def fuzz(target, file='small.txt', verbose=False):
                 try:
                     response = requests.get(target + '/' + word, timeout=5)
                     if response.status_code == 200:
-                        print(f'\033[92m [+]\033[0m Found: {target}/{word}')
+                        print(f'[\033[92m +\033[0m ] Found: {target}/{word}')
                     elif verbose:
-                        print(f'\033[91m [-]\033[0m Not Found: {target}/{word}')
+                        print(f'[\033[91m -\033[0m ] Not Found: {target}/{word}')
                 except requests.exceptions.Timeout:
                     if verbose:
-                        print(f'\033[91m [-]\033[0m Timeout for: {target}/{word}')
+                        print(f'[\033[91m -\033[0m ] Timeout for: {target}/{word}')
                 except requests.exceptions.RequestException as e:
                     if verbose:
-                        print(f'\033[91m [-]\033[0m Error for {target}/{word}: {e}')
+                        print(f'[\033[91m -\033[0m ] Error for {target}/{word}: {e}')
 
     except KeyboardInterrupt:
         print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
