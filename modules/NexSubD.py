@@ -29,9 +29,9 @@ def filter_url(url):
     else:
         return url  # Return the original URL if no match
         
-def fuzz(target, file='./subdomains.txt', verbose=False):
+def fuzz(target, file='./lists/subdomain_list.txt', verbose=False):
     try:
-        filename = file if file else './subdomains.txt'
+        filename = file if file else './lists/subdomain_list.txt'
 
         with open(filename, 'r') as f:
             for word in f.readlines():
