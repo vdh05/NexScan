@@ -37,6 +37,19 @@ def enum_public_shares(target, port):
     print(f"\n\033[94m[*]\033[0m Enumerating public SMB shares on {target}...\n")
     return list_smb_shares(target, port=port)
 
+def _access_share(conn, share):
+    """
+    Access the specified share and list its contents.
+    """
+    try:
+        print(f"\n\033[94m[*]\033[0m Accessing share: {share}")
+        files = conn.listPath(share, '/')
+        print(f"\033[92m[+]\033[0m Contents of share '{share}':")
+        for file in files:
+            print(f"  - {file.filename} (size: {file.file_size} bytes)")
+    except Exception as e:
+        print(f"\033[91m[-]\033[0m Failed to access share '{share}': {e}")
+
 # Function to brute-force SMB credentials and list shares after authentication
 def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=None):
     try: 
@@ -44,7 +57,11 @@ def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=N
         remote_name = "Target"
 
         # Enumerate public shares (guest access)
-        public_shares = enum_public_shares(target, port)
+        if not user and not password:
+            public_shares = enum_public_shares(target, port)
+            if share and share not in public_shares:
+                print(f'\033[91m[-]\033[0m Specified share "{share}" not found among public shares.')
+            return
 
         # Brute-force with provided credentials or files
         print(f'\nFuzzing SMB with user: {user}, password: {password}, target: {target}, port: {port}\n')
@@ -54,8 +71,11 @@ def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=N
             conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
             if conn.connect(target, port):
                 print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-                print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-                authenticated_shares = list_smb_shares(target, user, password, port)
+                if share:
+                    _access_share(conn, share)  # Access the specified share
+                else:
+                    print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                    authenticated_shares = list_smb_shares(target, port, user, password)
             else:
                 print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
 
@@ -67,12 +87,15 @@ def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=N
                 conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
                 if conn.connect(target, port):
                     print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-                    print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-                    authenticated_shares = list_smb_shares(target, user, password, port)
+                    if share:
+                        _access_share(conn, share)  # Access the specified share
+                    else:
+                        print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                        authenticated_shares = list_smb_shares(target, port, user, password)
                     break
                 else:
                     print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-        
+
         # Case 3: Username from input and password from file
         elif passfile and user:
             with open(passfile, 'r') as f:
@@ -81,12 +104,15 @@ def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=N
                 conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
                 if conn.connect(target, port):
                     print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-                    print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-                    authenticated_shares = list_smb_shares(target, user, password, port)
+                    if share:
+                        _access_share(conn, share)  # Access the specified share
+                    else:
+                        print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                        authenticated_shares = list_smb_shares(target, port, user, password)
                     break
                 else:
                     print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-        
+
         # Case 4: Both username and password files provided
         elif userfile and passfile:
             with open(userfile, 'r') as f:
@@ -98,15 +124,18 @@ def fuzz_smb(user, password, target, port, share=None, userfile=None, passfile=N
                     conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
                     if conn.connect(target, port):
                         print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-                        print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-                        authenticated_shares = list_smb_shares(target, user, password, port)
+                        if share:
+                            _access_share(conn, share)  # Access the specified share
+                        else:
+                            print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                            authenticated_shares = list_smb_shares(target, port, user, password)
                         break
                     else:
                         print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-        
+
         else:
             print('\033[91m[-]\033[0m Please provide both username and password files or direct input')
             exit(1)
     except KeyboardInterrupt:
-            print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
-            exit(1)
+        print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
+        exit(1)
