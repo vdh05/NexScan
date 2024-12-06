@@ -72,5 +72,5 @@ def connectMySQL(host, user=None, password=None, userfile=None, passfile=None, v
         return False  # No successful login
 
     except KeyboardInterrupt:
-        print('\033[91m[-]\033[0m Detecting Keyboard Interrupt...Exiting...')
+        print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)

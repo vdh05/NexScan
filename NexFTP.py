@@ -81,5 +81,5 @@ def bruteFTP(host, userfile, passfile, user=None, password=None, verbose=False, 
                             print(f'\033[91m [-]\033[0m {user} : {password} (Error: {e})')
 
     except KeyboardInterrupt:
-        print('\033[91m [-]\033[0m Detecting Keyboard Interrupt...Exiting...')
+        print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)

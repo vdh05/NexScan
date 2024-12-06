@@ -39,60 +39,44 @@ def enum_public_shares(target, port=445):
 
 # Function to brute-force SMB credentials and list shares after authentication
 def fuzz_smb(user, password, target, share=None, port=445, userfile=None, passfile=None):
-    my_name = "NexScan"
-    remote_name = "Target"
+    try: 
+        my_name = "NexScan"
+        remote_name = "Target"
 
-    # Enumerate public shares (guest access)
-    public_shares = enum_public_shares(target, port)
+        # Enumerate public shares (guest access)
+        public_shares = enum_public_shares(target, port)
 
-    # Brute-force with provided credentials or files
-    print(f'\nFuzzing SMB with user: {user}, password: {password}, target: {target}, port: {port}\n')
+        # Brute-force with provided credentials or files
+        print(f'\nFuzzing SMB with user: {user}, password: {password}, target: {target}, port: {port}\n')
 
-    # Case 1: Direct user and password provided
-    if user and password:
-        conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
-        if conn.connect(target, port):
-            print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-            print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-            authenticated_shares = list_smb_shares(target, user, password, port)
-        else:
-            print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-
-    # Case 2: Username from file and password from input
-    elif userfile and password:
-        with open(userfile, 'r') as f:
-            users = [line.strip() for line in f]
-        for user in users:
+        # Case 1: Direct user and password provided
+        if user and password:
             conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
             if conn.connect(target, port):
                 print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
                 print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
                 authenticated_shares = list_smb_shares(target, user, password, port)
-                break
             else:
                 print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-    
-    # Case 3: Username from input and password from file
-    elif passfile and user:
-        with open(passfile, 'r') as f:
-            passwords = [line.strip() for line in f]
-        for password in passwords:
-            conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
-            if conn.connect(target, port):
-                print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
-                print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
-                authenticated_shares = list_smb_shares(target, user, password, port)
-                break
-            else:
-                print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-    
-    # Case 4: Both username and password files provided
-    elif userfile and passfile:
-        with open(userfile, 'r') as f:
-            users = [line.strip() for line in f]
-        with open(passfile, 'r') as f:
-            passwords = [line.strip() for line in f]
-        for user in users:
+
+        # Case 2: Username from file and password from input
+        elif userfile and password:
+            with open(userfile, 'r') as f:
+                users = [line.strip() for line in f]
+            for user in users:
+                conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
+                if conn.connect(target, port):
+                    print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
+                    print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                    authenticated_shares = list_smb_shares(target, user, password, port)
+                    break
+                else:
+                    print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
+        
+        # Case 3: Username from input and password from file
+        elif passfile and user:
+            with open(passfile, 'r') as f:
+                passwords = [line.strip() for line in f]
             for password in passwords:
                 conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
                 if conn.connect(target, port):
@@ -102,7 +86,27 @@ def fuzz_smb(user, password, target, share=None, port=445, userfile=None, passfi
                     break
                 else:
                     print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
-    
-    else:
-        print('\033[91m[-]\033[0m Please provide both username and password files or direct input')
-        exit(1)
+        
+        # Case 4: Both username and password files provided
+        elif userfile and passfile:
+            with open(userfile, 'r') as f:
+                users = [line.strip() for line in f]
+            with open(passfile, 'r') as f:
+                passwords = [line.strip() for line in f]
+            for user in users:
+                for password in passwords:
+                    conn = SMBConnection(user, password, my_name, remote_name, use_ntlm_v2=True)
+                    if conn.connect(target, port):
+                        print(f'\033[92m[+]\033[0m Successfully connected: {user}:{password}')
+                        print("\n\033[94m[*]\033[0m Enumerating SMB shares after successful login...\n")
+                        authenticated_shares = list_smb_shares(target, user, password, port)
+                        break
+                    else:
+                        print(f'\033[91m[-]\033[0m Failed to connect: {user}:{password}')
+        
+        else:
+            print('\033[91m[-]\033[0m Please provide both username and password files or direct input')
+            exit(1)
+    except KeyboardInterrupt:
+            print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
+            exit(1)

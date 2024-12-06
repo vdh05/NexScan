@@ -34,5 +34,5 @@ def fuzz(target, file='small.txt', verbose=False):
                         print(f'\033[91m [-]\033[0m Error for {target}/{word}: {e}')
 
     except KeyboardInterrupt:
-        print('\033[91m [-]\033[0m Detecting Keyboard Interrupt...Exiting...')
+        print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)

@@ -90,5 +90,5 @@ def ssh_bruteforce(host, port, userfile, passfile, user=None, password=None, ver
             exit(1)
 
     except KeyboardInterrupt:
-        print('\033[91m [-]\033[0m Detecting Keyboard Interrupt...Exiting...')
+        print('[\033[91m -\033[0m ] Detecting Keyboard Interrupt...Exiting...')
         exit(1)
