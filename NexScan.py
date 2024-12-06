@@ -11,12 +11,12 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 
 import os
 import argparse
-import NexSMB
-import NexFTP
-import NexSSH
-import NexMySql
-import NexDir
-import NexSubD
+import modules.NexSMB as NexSMB
+import modules.NexFTP as NexFTP
+import modules.NexSSH as NexSSH
+import modules.NexMySql as NexMySql
+import modules.NexDir as NexDir
+import modules.NexSubD as NexSubD
 
 # os.system('pip3 install -r requirements.txt')
 

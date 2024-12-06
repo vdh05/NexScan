@@ -12,7 +12,7 @@ NexScan is distributed in the hope that it will be useful, but WITHOUT ANY WARRA
 import requests
 import argparse
 
-def fuzz(target, file='small.txt', verbose=False):
+def fuzz(target, file='./lists/directory_list.txt', verbose=False):
     try:
         if not target.startswith(('http://', 'https://')):
             target = 'http://' + target
